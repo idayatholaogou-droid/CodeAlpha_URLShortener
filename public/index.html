@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8" />
+<title>URL Shortener - CodeAlpha</title>
+<style>
+  body { font-family: Arial, sans-serif; max-width: 600px; margin: 60px auto; padding: 0 20px; }
+  h1 { color: #222; }
+  input, button { padding: 10px; font-size: 15px; }
+  input { width: 70%; }
+  button { background: #2563eb; color: white; border: none; cursor: pointer; }
+  #result { margin-top: 20px; padding: 15px; background: #f3f4f6; border-radius: 6px; display: none; }
+  #result a { color: #2563eb; }
+</style>
+</head>
+<body>
+  <h1>🔗 Raccourcisseur d'URL</h1>
+  <p>Colle une URL longue ci-dessous pour obtenir un lien court.</p>
+  <form id="shortenForm">
+    <input type="url" id="originalUrl" placeholder="https://exemple.com/une-url-tres-longue" required />
+    <button type="submit">Raccourcir</button>
+  </form>
+  <div id="result"></div>
+
+  <script>
+    const form = document.getElementById('shortenForm');
+    const result = document.getElementById('result');
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const originalUrl = document.getElementById('originalUrl').value;
+
+      try {
+        const res = await fetch('/api/shorten', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ originalUrl })
+        });
+        const data = await res.json();
+
+        if (!res.ok) {
+          result.style.display = 'block';
+          result.innerHTML = `<p style="color:red">${data.error}</p>`;
+          return;
+        }
+
+        result.style.display = 'block';
+        result.innerHTML = `
+          <p>Lien court : <a href="${data.shortUrl}" target="_blank">${data.shortUrl}</a></p>
+          <p>Clics : ${data.clicks}</p>
+        `;
+      } catch (err) {
+        result.style.display = 'block';
+        result.innerHTML = `<p style="color:red">Erreur réseau.</p>`;
+      }
+    });
+  </script>
+</body>
+</html>
