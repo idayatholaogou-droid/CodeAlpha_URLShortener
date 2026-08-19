@@ -37,12 +37,13 @@ Le serveur démarre sur `http://localhost:3000` par défaut.
 ```bash
 curl -X POST http://localhost:3000/api/shorten \
   -H "Content-Type: application/json" \
+-d '{"originalUrl": "https://www.google.com"}'
 
 
 Réponse :
 ```json
 {
-  "shortUrl": "http://localhost:3000/aZ3kLp",
+  "originalUrl": "https://www.google.com",
   "shortCode": "aZ3kLp",
   "clicks": 0
 }
