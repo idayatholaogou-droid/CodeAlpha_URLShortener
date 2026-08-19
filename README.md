@@ -13,7 +13,7 @@ Backend Node.js/Express avec MySQL, réalisé dans le cadre de l'internship Code
 
 ```bash
 npm install
-cp .env.example .env
+copy .env.example .env
 # Renseigner les identifiants MySQL dans .env
 ```
 
